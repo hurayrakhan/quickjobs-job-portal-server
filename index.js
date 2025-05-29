@@ -3,7 +3,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const port = process.env.PORT || 3000;
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 
 app.use(express());
@@ -25,9 +25,22 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
-    
+    const jobCollection = client.db('job_portal_db').collection('jobs');
 
+    // get all data 
+    app.get('/jobs', async(req, res) => {
+        const cursor =  jobCollection.find();
+        const result = await cursor.toArray();
+        res.send(result)
+    });
 
+    // get a single data by id
+    app.get('/jobs/:id', async(req, res) => {
+        const id = req.params.id;
+        const query = {_id : new ObjectId(id)};
+        const result = await jobCollection.findOne(query);
+        res.send(result)
+    })
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
