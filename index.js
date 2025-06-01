@@ -67,3 +67,37 @@ app.get('/', (req, res) => {
 app.listen(port , () => {
     console.log('job-portal server running on port', port)
 })
+
+
+/*
+for JWT
+
+1 we need to install jsonWebToken first (npm install jsonwebtoken)
+2 write (const jwt = require("jsonwebtoken");)
+3 
+
+
+From client side
+send the information(email, ) to generate token
+
+useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+            setUser(currentUser);
+            setLoading(false);
+            if(currentUser?.email){
+              const userData = currentUser.email;
+              axios.post('localhost:3000/jwt', userData, )
+              .then(res => console.log(res.data))
+              .catch(error => {
+                console.log(error)
+              })
+            }
+        });
+        return () => unsubscribe();
+    }, []);
+
+
+Then receive data from server side
+
+
+*/ 
