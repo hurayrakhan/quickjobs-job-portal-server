@@ -86,7 +86,7 @@ useEffect(() => {
             setLoading(false);
             if(currentUser?.email){
               const userData = currentUser.email;
-              axios.post('localhost:3000/jwt', userData, )
+              axios.post('localhost:3000/jwt', userData, {withCredentials: true})
               .then(res => console.log(res.data))
               .catch(error => {
                 console.log(error)
@@ -98,6 +98,31 @@ useEffect(() => {
 
 
 Then receive data from server side
+1 create jwt api
+
+app.post('/jwt', async(req, res) => {
+  const userData = req.body;
+  const token = jwt.sign(userData, process.env.JWT_ACCESS_SECRET, {expiresIn: '1d'})
+})
+
+2 in the cors setting set credentials and origin
+
+app.use(cors({
+    origin: ['client side localhost address'],
+    credentials:true
+}))
 
 
+3 after generating the token set it to the cookie with some options
+
+need to install cookie-parser
+
+require cookieParser
+
+res.cookie('Token', token, {
+    httpOnly: true,
+    secure:false
+})
+
+use cookie-parser as middleWere
 */ 
