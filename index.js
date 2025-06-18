@@ -37,6 +37,14 @@ const verifyFirebaseToken = async (req, res, next) => {
   }
 };
 
+
+const verifyTokenEmail = (req, res, next) => {
+  if (req.query.email !== req.decoded.email) {
+    return res.status(403).send({ message: 'forbidden access' })
+  }
+  next()
+}
+
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
